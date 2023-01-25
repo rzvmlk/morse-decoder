@@ -35,31 +35,24 @@ const MORSE_TABLE = {
     '---..':  '8',
     '----.':  '9',
     '-----':  '0',
+    '*': '*',
 };
 
 function decode(expr) {
-    let morseString = expr;
-   
     let result = [];
-
-    for (let i=0; i<morseString.length; i=+10) {
-        if (morseString.slice(i, i+1) == "*"){
-            result.push(' ');
-        } else {
-            let letter = morseString.slice(i, i+10);
-            let deshifr = '';
-            for (j=0; j<letter.length; j+2){
-                if (letter.slice(j,j+2) == '10'){
-                    deshifr += '.' ;
-                } else if(letter.slice(j,j+2) =='11'){
-                    deshifr += '-' ;
-                } 
-            }
-        result.push(MORSE_TABLE[deshifr])
-        }
-       
-    } return (result.join())
-   
+    let letter;
+    for (let i=0; i<expr.length; i+=10){
+        letter = expr.slice(i,i+10)
+                    .replace(/10/g , ".")
+                    .replace(/11/g, "-")
+                    .replace(/00/g, "")
+                    .replace(/\*{10}/, "*");
+        result.push(MORSE_TABLE[letter]);
+        
+    }
+    return (result.join('').replace(/\*/g, " "))
+    
+    
 }
 
 module.exports = {
